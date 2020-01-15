@@ -23,17 +23,24 @@ t_flags *opts) {
 
 void cmp_t_mod_desc(t_list_dir *first, t_list_dir *second, 
 t_flags *opts) {
-    time_t t1 = get_time_type(first, opts);
-    time_t t2 = get_time_type(second, opts);
+    struct timespec t1 = get_time_type(first, opts);
+    struct timespec t2 = get_time_type(second, opts);
 
-    if (t1 > t2) {
+    if (t1.tv_sec > t2.tv_sec) {
         swap(first, second);
         return;
     }
-    if (t1 == t2) {
-        if (mx_strcmp(first->d_name, second->d_name) < 0) {
+
+    if (t1.tv_sec == t2.tv_sec) {
+        if (t1.tv_nsec > t2.tv_nsec) {
             swap(first, second);
             return;
+        }
+        else if (t1.tv_nsec == t2.tv_nsec) {
+            if (mx_strcmp(first->d_name, second->d_name) < 0) {
+                swap(first, second);
+                return;
+            }
         }
     }
 }

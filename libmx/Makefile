@@ -61,6 +61,7 @@ SRCS = src/mx_printchar.c \
 	src/mx_pop_back.c \
 	src/mx_list_size.c \
 	src/mx_sort_list.c \
+	src/mx_delete_list.c \
 
 OBJC = obj/mx_printchar.c \
 	obj/mx_print_unicode.c \
@@ -123,6 +124,7 @@ OBJC = obj/mx_printchar.c \
 	obj/mx_pop_back.c \
 	obj/mx_list_size.c \
 	obj/mx_sort_list.c \
+	obj/mx_delete_list.c \
 
 OBJ = obj/mx_printchar.o \
 	obj/mx_print_unicode.o \
@@ -185,6 +187,7 @@ OBJ = obj/mx_printchar.o \
 	obj/mx_pop_back.o \
 	obj/mx_list_size.o \
 	obj/mx_sort_list.o \
+	obj/mx_delete_list.o \
 
 INC = inc/libmx.h
 
@@ -208,5 +211,6 @@ uninstall:
 
 clean:
 	@rm -rf ./obj
+	@rm -rf *.o
 
 reinstall: uninstall all

@@ -46,10 +46,10 @@ void swap(t_list_dir *first, t_list_dir *second) {
     second->statbuf = temp_stat;
 }
 
-time_t get_time_type(t_list_dir *node, t_flags *opts) {
+struct timespec get_time_type(t_list_dir *node, t_flags *opts) {
     if (opts->using_u)
-        return node->statbuf->st_atime;
+        return node->statbuf->st_atimespec;
     if (opts->using_c)
-        return node->statbuf->st_ctime;
-    return node->statbuf->st_mtime;
+        return node->statbuf->st_ctimespec;
+    return node->statbuf->st_mtimespec;
 }

@@ -10,11 +10,10 @@ void mx_constructor(t_list_dir *file_list,
 t_list_dir *dir_list, t_flags flag, int files_cnt) {
     file_list = mx_sort_list_dir(file_list, &flag);
     dir_list = mx_sort_list_dir(dir_list, &flag);
-
-    if (flag.using_1 || !isatty(1))
-        mx_print_flag_1(file_list, &flag);
-    else if (flag.using_l)
+    if (flag.using_l)
         mx_print_l_flag(file_list, &flag, false);
+    else if (flag.using_1 || (!isatty(STDOUT_FILENO) && !flag.using_C))
+        mx_print_flag_1(file_list, &flag);
     else
         mx_print_table(file_list, &flag);
     for (t_list_dir *w = dir_list; w != NULL; w = w->next) {
@@ -79,7 +78,7 @@ t_flags *opts, bool print_header) {
     }
     if (opts->using_l && list)
         mx_print_l_flag(list, opts, true);
-    else if (opts->using_1)
+    else if (opts->using_1 || (!isatty(STDOUT_FILENO) && !opts->using_C))
         mx_print_flag_1(list, opts);
     else
         mx_print_table(list, opts);

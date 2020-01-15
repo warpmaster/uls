@@ -117,7 +117,8 @@ t_flags *opts);
 void cmp_t_mod_asc(t_list_dir *first, t_list_dir *second, 
 t_flags *opts);
 void swap(t_list_dir *first, t_list_dir *second);
-time_t get_time_type(t_list_dir *node, t_flags *opts);
+//time_t get_time_type(t_list_dir *node, t_flags *opts);
+struct timespec get_time_type(t_list_dir *node, t_flags *opts);
 int mx_get_digits(int num);
 void mx_print_perm_and_link(t_list_dir *w, t_col_size info);
 void mx_print_size_and_time(t_list_dir *w, t_flags *fl, t_col_size info);

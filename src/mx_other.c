@@ -4,12 +4,13 @@ void err_dir(char *path, int *error_no){
     char **split = mx_strsplit(path, '/');
     int i = mx_count_words(path, '/');
 
+    // если выводить только один путь к директории с ограниченным доступом, то печатается лишний путь
     *error_no = errno;
-    mx_printerr(path);
-    mx_printerr(":\n");
+    mx_printstr(path);
+    mx_printstr(":\n");
     mx_printerr("uls: ");
     perror(split[i-1]);
-    
+
     for (int j = 0; j < i; j++) {
         free(split[j]);
     }

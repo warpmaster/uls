@@ -11,10 +11,6 @@ t_flags *mx_get_flags(t_flags *fl, char *flags) {
         exit(1);
     }
     if(is_valid_flag(flags)) {
-        if(!isatty(1)) {
-            fl->using_C = false;
-            fl->using_1 = true;
-        }
         check_output_flags(fl, flags);
         check_info_flag(fl, flags);
         check_l_miniflags(fl, flags);
