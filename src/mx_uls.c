@@ -8,25 +8,25 @@ static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list, t
 int main(int argc, char **argv) {
     t_flags flag;
     int first_file_pos = 1;
-    int is_error = 0;
+    int is_err = 0;
     t_list_dir *file_list = NULL;
     t_list_dir *dir_list = NULL;
 
     init_opts(&flag);
     first_file_pos = read_arg(argc, argv, &flag);
-    check_arg(argc, argv, first_file_pos, &is_error);
+    check_arg(argc, argv, first_file_pos, &is_err);
     if (first_file_pos == argc) {
-        directory_walker(".", &flag, false);
+        directory_walker(".", &flag, false, &is_err);
         //system("leaks uls");
-        return is_error;
+        return is_err;
     }
     for (int i = first_file_pos; i < argc; i++)
         create_lists(argv[i], &file_list, &dir_list, &flag);
     file_list = mx_sort_list_dir(file_list, &flag);
     dir_list = mx_sort_list_dir(dir_list, &flag);
-    mx_constructor(file_list, dir_list, flag, argc - first_file_pos);
+    is_err = mx_constructor(file_list, dir_list, flag, argc - first_file_pos);
     //system("leaks uls");
-    return is_error;
+    return is_err;
 }
 
 static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list, t_flags *fl){

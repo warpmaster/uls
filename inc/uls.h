@@ -96,9 +96,9 @@ void mx_print_l_flag(t_list_dir *lst, t_flags *fl, bool pr_total);
 void add_color(char *name, char *col);
 void mx_print_G_flag(char *name, mode_t value);
 void mx_print_flag_1(t_list_dir *head, t_flags *opts);
-void mx_constructor(t_list_dir *file_list, t_list_dir *dir_list, t_flags flag,
+/*void */int mx_constructor(t_list_dir *file_list, t_list_dir *dir_list, t_flags flag,
 int files_cnt);
-void directory_walker(char *path, t_flags *opts, bool print_header);
+void directory_walker(char *path, t_flags *opts, bool print_header, int *is_err);
 t_list_dir *make_dir_list(char *path, t_list_dir *list,
 t_flags *opts, int *error_no);
 void print_dir_list(char *dir_name, t_list_dir *list, 

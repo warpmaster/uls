@@ -1,8 +1,0 @@
-13d12
-< drwxr-xr-x@ 37 root  wheel         1184 Jun  2 11:36:54 2019 bin
-15c14
-< drwxr-xr-x   2 root  wheel           64 Jan 28 16:54:17 2019 Network
----
-> drwxr-xr-x@ 37 root  wheel         1184 Jun  2 11:36:54 2019 bin
-17a17
-> drwxr-xr-x   2 root  wheel           64 Jan 28 16:54:17 2019 Network

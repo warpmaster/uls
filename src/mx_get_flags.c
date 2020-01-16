@@ -15,7 +15,7 @@ t_flags *mx_get_flags(t_flags *fl, char *flags) {
         check_info_flag(fl, flags);
         check_l_miniflags(fl, flags);
         check_gn_flags(fl, flags);
-        if(!isatty(1))
+        if(!isatty(STDOUT_FILENO))
             fl->using_G = false;
     }
     else {

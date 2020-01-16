@@ -10,20 +10,27 @@ static void print_table(t_node **arr, t_table_info table,
 int col_width, t_flags *opts);
 static void delete_table(t_node ***arr, int rows);
 
+
+void mx_add_tabs(int width, int len);
+
 void mx_print_table(t_list_dir *head, t_flags *opts) {
     int col_width = 0;
     int elements = mx_list_size_dir(head, &col_width);
     t_table_info table;
     struct winsize w;
+    const size_t static_win_size = 80;
     
     table.cols = elements;
     table.rows = 1;
     if (elements == 0)
         return;
     ioctl(0, TIOCGWINSZ, &w);
+    
     col_width = (opts->using_G ? col_width + 1 
     : col_width + 8 - col_width % 8);
-    get_rc_num(elements, w.ws_col, col_width, &table);
+
+    get_rc_num(elements, (isatty(STDOUT_FILENO) ? w.ws_col : static_win_size),
+    col_width, &table);
     make_table(head, table, col_width, opts);
 }
 
@@ -94,11 +101,15 @@ t_flags *opts) {
                 mx_print_G_flag(arr[i][j].ptr->d_name, 
                 arr[i][j].ptr->statbuf->st_mode) : 
                 mx_printstr(arr[i][j].ptr->d_name);
-                if (j != table.cols - 1) {
-                    for (int c = col_width - mx_strlen(arr[i][j].ptr->d_name);
-                    c > 0; c--) {
-                        mx_printchar(' ');
-                    }
+                if (j != table.cols - 1 
+                && !(j == table.cols - 2 && arr[i][j+1].ptr == NULL)) {
+                    int strlen = mx_strlen(arr[i][j].ptr->d_name);
+                    int tabs = (col_width - strlen) / 8;
+
+                    if (strlen % 8 != 0)
+                            tabs++;
+                    for (int i = 0; i < tabs; i++)
+                        mx_printchar('\t');
                 }
             }
         }

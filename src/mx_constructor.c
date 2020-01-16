@@ -1,13 +1,14 @@
 #include "uls.h"
 
-void directory_walker(char *path, t_flags *opts, bool print_header);
 t_list_dir *make_dir_list(char *path, t_list_dir *list,
 t_flags *opts, int *error_no);
 void print_dir_list(char *dir_name, t_list_dir *list, 
 t_flags *opts, bool print_header);
 
-void mx_constructor(t_list_dir *file_list, 
+/*void */int mx_constructor(t_list_dir *file_list, 
 t_list_dir *dir_list, t_flags flag, int files_cnt) {
+    int is_err = 0;
+
     file_list = mx_sort_list_dir(file_list, &flag);
     dir_list = mx_sort_list_dir(dir_list, &flag);
     if (flag.using_l)
@@ -18,32 +19,35 @@ t_list_dir *dir_list, t_flags flag, int files_cnt) {
         mx_print_table(file_list, &flag);
     for (t_list_dir *w = dir_list; w != NULL; w = w->next) {
         if (dir_list->next == NULL && file_list == NULL && files_cnt == 1)
-            directory_walker(w->path, &flag, false);
+            directory_walker(w->path, &flag, false, &is_err);
         else {
             if (w != dir_list || file_list != NULL)
                 mx_printchar('\n');
-            directory_walker(w->path, &flag, true);
+            directory_walker(w->path, &flag, true, &is_err);
         }
     }
     mx_delete_list_dir(&file_list);
     mx_delete_list_dir(&dir_list);
+
+    return is_err;
 }
 
-void directory_walker(char *path, t_flags *opts, bool print_header) {
+void directory_walker(char *path, t_flags *opts, bool print_header, int *is_err) {
     t_list_dir *list = NULL;
     int error_no = -1;
 
     list = make_dir_list(path, list, opts, &error_no);
-    if (error_no == -1) {
-        print_dir_list(path, list, opts, print_header);
-    }
+    if (error_no == -1)
+        print_dir_list(path, list, opts, print_header); 
+    else
+        *is_err = 1;
     if (opts->using_R) {
         for (t_list_dir *w = list; w != NULL; w = w->next) {
             if (mx_get_file_type(w->statbuf->st_mode) == 'd' 
             && !(mx_strcmp(w->d_name, ".") == 0 
             || mx_strcmp(w->d_name, "..") == 0)) {
                 mx_printchar('\n');
-                directory_walker(w->path, opts, true);
+                directory_walker(w->path, opts, true, is_err);
             }
         }
     }
