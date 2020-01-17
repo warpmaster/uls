@@ -9,7 +9,7 @@ void mx_print_perm_and_link(t_list_dir *w, t_col_size info) {
     mx_printchar(return_acl(w->path));
     mx_printchar(' ');
     for (int i = info.block1_msize - mx_get_digits(w->statbuf->st_nlink);
-        i > 0; i--)
+    i > 0; i--)
         mx_printchar(' ');
     mx_printint(w->statbuf->st_nlink);
     mx_printchar(' ');

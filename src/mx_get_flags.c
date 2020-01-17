@@ -1,6 +1,5 @@
 #include "uls.h"
 
-static bool is_valid_flag(char *s);
 static void check_output_flags(t_flags *opts, char *flags);
 static void check_info_flag(t_flags *opts, char *flags);
 static void check_l_miniflags(t_flags *opts, char *flags);
@@ -10,7 +9,7 @@ t_flags *mx_get_flags(t_flags *fl, char *flags) {
     if(*++flags == '\0') {
         exit(1);
     }
-    if(is_valid_flag(flags)) {
+    if(mx_is_valid_flag(flags)) {
         check_output_flags(fl, flags);
         check_info_flag(fl, flags);
         check_l_miniflags(fl, flags);
@@ -23,27 +22,6 @@ t_flags *mx_get_flags(t_flags *fl, char *flags) {
         exit(1);
     }
     return fl;
-}
-
-static bool is_valid_flag(char *s) {
-    bool res;
-    static const char *allf = "lC1aAGrRTngucSt";
-    
-    while(*s) {
-        res = false;
-        for (int i = 0, j = mx_strlen(allf); i < j; i++) {
-            if(*s == allf[i])
-                res = true;
-        }
-        if (res == false) {
-            mx_printerr("uls: illegal option -- ");
-            write(2, s, 1);
-            mx_printerr("\n");
-            return false;
-        }
-        s++;
-    }
-    return true;
 }
 
 static void check_output_flags(t_flags *opts, char *flags) {

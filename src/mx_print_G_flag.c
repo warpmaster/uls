@@ -3,27 +3,27 @@
 static void print_reg(char *name, mode_t value);
 static void print_dir(char *name, mode_t value);
 
-void add_color(char *name, char *col){
+void mx_add_color(char *name, char *col){
     mx_printstr(col);
     mx_printstr(name);
-    mx_printstr(DEFAULT);
+    mx_printstr(MX_DEFAULT);
 }
 
 void mx_print_G_flag(char *name, mode_t value) {
     switch (mx_get_file_type(value)) {
-        case 'p': add_color(name, YELLOW);
+        case 'p': mx_add_color(name, MX_YELLOW);
             break;
-        case 'c': add_color(name, YELLOW_BLUE);
+        case 'c': mx_add_color(name, MX_YELLOW_BLUE);
             break;
         case 'd': print_dir(name, value);
             break;
-        case 'b': add_color(name, AQUA_BLUE);
+        case 'b': mx_add_color(name, MX_AQUA_BLUE);
             break;
         case '-': print_reg(name, value);
             break;
-        case 'l': add_color(name, PINK);
+        case 'l': mx_add_color(name, MX_PINK);
             break;
-        case 's': add_color(name, GREEN);
+        case 's': mx_add_color(name, MX_GREEN);
             break;
         default: mx_printstr(name);
     }
@@ -32,26 +32,26 @@ void mx_print_G_flag(char *name, mode_t value) {
 static void print_reg(char *name, mode_t value){
     if(((value & 0x040) && (value & 0x800)) 
     || (!(value & 0x040) && (value & 0x800)))
-        add_color(name, BLACK_RED);
+        mx_add_color(name, MX_BLACK_RED);
     else if(value & 0x040 && !(value & 0x800) 
     && (((value & 0x008) && (value & 0x400)) 
     || (!(value & 0x008) && (value & 0x400))))
-        add_color(name, AQUA_BLACK);
+        mx_add_color(name, MX_AQUA_BLACK);
     else if((value & 0x040 && !(value & 0x800)) 
     || (value & 0x008 && !(value & 0x400)) 
     || (value & 0x001 && !(value & 0x200)) 
     || (value & 0x001 && value & 0x200))
-        add_color(name, RED);
+        mx_add_color(name, MX_RED);
     else 
-        add_color(name, DEFAULT);
+        mx_add_color(name, MX_DEFAULT);
 }
 
 static void print_dir(char *name, mode_t value){
     if((value & 0x002) &&((value & 0x001 && value & 0x200) 
     || (value & 0x001 && value & 0x200)))
-        add_color(name, GREEN_BLACK);
+        mx_add_color(name, MX_GREEN_BLACK);
     else if(value & 0x002 && (value & 0x001 && !(value & 0x200)))
-        add_color(name, YELLOW_BLACK);
+        mx_add_color(name, MX_YELLOW_BLACK);
     else
-        add_color(name, BLUE);
+        mx_add_color(name, MX_BLUE);
 }

@@ -3,7 +3,8 @@
 static void init_opts(t_flags *opts);
 static void check_arg(int argc, char *argv[], int i, int *is_error);
 static int read_arg(int argc, char *argv[], t_flags *fl);
-static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list, t_flags *fl);
+static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list,
+t_flags *fl);
 
 int main(int argc, char **argv) {
     t_flags flag;
@@ -16,8 +17,7 @@ int main(int argc, char **argv) {
     first_file_pos = read_arg(argc, argv, &flag);
     check_arg(argc, argv, first_file_pos, &is_err);
     if (first_file_pos == argc) {
-        directory_walker(".", &flag, false, &is_err);
-        //system("leaks uls");
+        mx_directory_walker(".", &flag, false, &is_err);
         return is_err;
     }
     for (int i = first_file_pos; i < argc; i++)
@@ -25,11 +25,11 @@ int main(int argc, char **argv) {
     file_list = mx_sort_list_dir(file_list, &flag);
     dir_list = mx_sort_list_dir(dir_list, &flag);
     is_err = mx_constructor(file_list, dir_list, flag, argc - first_file_pos);
-    //system("leaks uls");
     return is_err;
 }
 
-static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list, t_flags *fl){
+static void create_lists(char *argv, t_list_dir **f_list, t_list_dir **d_list,
+t_flags *fl){
     struct stat statbuf;
 
     if (lstat(argv, &statbuf) != -1) {
@@ -69,7 +69,7 @@ static void check_arg(int argc, char *argv[], int i, int *is_error) {
             mx_push_front(&bad_list, argv[i]);
         }
     }
-    bad_list = mx_sort_list(bad_list, cmp);
+    bad_list = mx_sort_list(bad_list, mx_cmp);
     mx_print_bad_list(bad_list);
     mx_delete_list(&bad_list);
 }
@@ -78,10 +78,9 @@ static void check_arg(int argc, char *argv[], int i, int *is_error) {
 static int read_arg(int argc, char *argv[], t_flags *fl) {
     int pos = 1;
     
-    if(!isatty(1)) {
+    if(!isatty(STDOUT_FILENO)) {
         fl->using_C = false;
         fl->using_1 = true;
-        //printf("debug_switch_1C\n");
     }
     for(int k = 1; k < argc; k++){
         if(*argv[k] == '-' && mx_strlen(argv[k]) != 1){

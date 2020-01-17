@@ -58,7 +58,7 @@ static char *hex_minor(dev_t dev) {
     char *minor = NULL;
     char *temp = NULL;
 
-    if (MINOR(dev) > 255) {
+    if (MX_MINOR(dev) > 255) {
         minor = mx_nbr_to_hex(dev & 0xffffff);
         temp = mx_strnew(10);
         mx_memset(temp, '0', 10);
@@ -69,13 +69,13 @@ static char *hex_minor(dev_t dev) {
         minor = temp;
     } 
     else {
-        minor = mx_itoa(MINOR(dev));
+        minor = mx_itoa(MX_MINOR(dev));
     }
     return minor;
 }
 
 static char *major_minor(dev_t dev) {
-    char *major = mx_itoa(MAJOR(dev));
+    char *major = mx_itoa(MX_MAJOR(dev));
     char *minor = hex_minor(dev);
     int tot_len = (mx_strlen(minor) > 3 ? 16 : 9);
     char *joined_str = mx_strnew(tot_len);

@@ -1,24 +1,24 @@
 #ifndef ULS_H
 #define ULS_H
 
-#define MINORBITS       24
-#define MINORMASK       ((1U << MINORBITS) - 1)
-#define MAJOR(dev)      ((unsigned int) ((dev) >> MINORBITS))
-#define MINOR(dev)      ((unsigned int) ((dev) & MINORMASK))
+#define MX_MINORBITS       24
+#define MX_MINORMASK       ((1U << MX_MINORBITS) - 1)
+#define MX_MAJOR(dev)      ((unsigned int) ((dev) >> MX_MINORBITS))
+#define MX_MINOR(dev)      ((unsigned int) ((dev) & MX_MINORMASK))
 
-#define RED  "\33[31m"
-#define YELLOW  "\33[33m"
-#define PINK  "\33[35m"
-#define AQUA  "\33[36m"
-#define BLUE  "\33[34m"
-#define GREEN "\33[32m"
-#define YELLOW_BLUE  "\33[43m\33[34m"
-#define AQUA_BLUE  "\33[46m\33[34m"
-#define GREEN_BLACK "\33[42m\33[30m"
-#define BLACK_RED "\33[30m\33[41m"
-#define AQUA_BLACK "\33[46m\33[30m"
-#define YELLOW_BLACK "\33[43m\33[30m"
-#define DEFAULT  "\33[0m"
+#define MX_RED  "\33[31m"
+#define MX_YELLOW  "\33[33m"
+#define MX_PINK  "\33[35m"
+#define MX_AQUA  "\33[36m"
+#define MX_BLUE  "\33[34m"
+#define MX_GREEN "\33[32m"
+#define MX_YELLOW_BLUE  "\33[43m\33[34m"
+#define MX_AQUA_BLUE  "\33[46m\33[34m"
+#define MX_GREEN_BLACK "\33[42m\33[30m"
+#define MX_BLACK_RED "\33[30m\33[41m"
+#define MX_AQUA_BLACK "\33[46m\33[30m"
+#define MX_YELLOW_BLACK "\33[43m\33[30m"
+#define MX_DEFAULT  "\33[0m"
 
 #include "./libmx/inc/libmx.h"
 #include <dirent.h>
@@ -80,11 +80,10 @@ typedef struct s_table {
     int rows;
 }t_table_info;
 
-typedef void (*fptr)(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
+typedef void (*fptr)(t_list_dir *first, t_list_dir *second, t_flags *opts);
 
 t_list_dir *mx_create_node_dir(const char *d_name, const char *path);
-void mx_push_front_dir(t_list_dir **list, const char *d_name, 
+void mx_push_front_dir(t_list_dir **list, const char *d_name,
 const char *path);
 void mx_push_back_dir(t_list_dir **list, const char *d_name, const char *path);
 int mx_list_size_dir(t_list_dir *list, int *max_len);
@@ -93,39 +92,37 @@ t_list_dir *mx_sort_list_dir(t_list_dir *lst, t_flags *opts);
 char mx_get_file_type(mode_t value);
 void mx_print_table(t_list_dir *head, t_flags *opts);
 void mx_print_l_flag(t_list_dir *lst, t_flags *fl, bool pr_total);
-void add_color(char *name, char *col);
+void mx_add_color(char *name, char *col);
 void mx_print_G_flag(char *name, mode_t value);
 void mx_print_flag_1(t_list_dir *head, t_flags *opts);
-/*void */int mx_constructor(t_list_dir *file_list, t_list_dir *dir_list, t_flags flag,
+int mx_constructor(t_list_dir *file_list, t_list_dir *dir_list, t_flags flag,
 int files_cnt);
-void directory_walker(char *path, t_flags *opts, bool print_header, int *is_err);
-t_list_dir *make_dir_list(char *path, t_list_dir *list,
+void mx_directory_walker(char *path, t_flags *opts, bool print_header,
+int *is_err);
+t_list_dir *mx_make_dir_list(char *path, t_list_dir *list,
 t_flags *opts, int *error_no);
-void print_dir_list(char *dir_name, t_list_dir *list, 
-t_flags *opts, bool print_header);
+void mx_print_dir_list(char *dir_name, t_list_dir *list, t_flags *opts,
+bool print_header);
 t_flags *mx_get_flags(t_flags *fl, char *flags);
-void cmp_lex_desc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void cmp_size_desc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void cmp_t_mod_desc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void cmp_lex_asc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void cmp_size_asc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void cmp_t_mod_asc(t_list_dir *first, t_list_dir *second, 
-t_flags *opts);
-void swap(t_list_dir *first, t_list_dir *second);
-//time_t get_time_type(t_list_dir *node, t_flags *opts);
-struct timespec get_time_type(t_list_dir *node, t_flags *opts);
+void mx_cmp_lex_desc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_cmp_size_desc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_cmp_t_mod_desc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_cmp_lex_asc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_cmp_size_asc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_cmp_t_mod_asc(t_list_dir *first, t_list_dir *second, t_flags *opts);
+void mx_swap(t_list_dir *first, t_list_dir *second);
+struct timespec mx_get_time_type(t_list_dir *node, t_flags *opts);
 int mx_get_digits(int num);
 void mx_print_perm_and_link(t_list_dir *w, t_col_size info);
 void mx_print_size_and_time(t_list_dir *w, t_flags *fl, t_col_size info);
 void mx_print_uid_gid(t_list_dir *w, t_flags *fl, t_col_size info);
 void mx_print_name_or_link(t_list_dir *w, t_flags *fl);
-void err_dir(char *path, int *error_no);
+void mx_err_dir(char *path);
 void mx_print_bad_list(t_list *lst);
-bool cmp(void *s1, void *s2);
+bool mx_cmp(void *s1, void *s2);
+void mx_printerror(char *path, int error_no, bool print_header);
+bool mx_is_valid_flag(char *s);
+void mx_make_table(t_list_dir *head, t_table_info table, int col_width,
+t_flags *opts);
 
 #endif
